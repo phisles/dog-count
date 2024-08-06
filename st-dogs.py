@@ -28,11 +28,16 @@ def update_counter(button_type):
                'Percentage': f"{dogs_percentage:.2f}%"}
     st.session_state.data = st.session_state.data.append(new_row, ignore_index=True)
 
+# Function to reset everything
+def reset_everything():
+    st.session_state.dogs_counter = 0
+    st.session_state.other_counter = 0
+    st.session_state.data = pd.DataFrame(columns=['Date', 'Dogs', 'Other', 'Percentage'])
+
 # Reset counters every day
 today = datetime.datetime.now().strftime('%Y-%m-%d')
 if 'last_reset' not in st.session_state or st.session_state.last_reset != today:
-    st.session_state.dogs_counter = 0
-    st.session_state.other_counter = 0
+    reset_everything()
     st.session_state.last_reset = today
 
 st.title('Button Click Counter')
@@ -43,19 +48,13 @@ if st.button('WHERE ARE THE DOGS?'):
 if st.button('OTHER'):
     update_counter('other')
 
+# Reset button
+if st.button('Reset Everything'):
+    reset_everything()
+
 # Display counters
 st.metric(label="Dogs Counter", value=st.session_state.dogs_counter)
 st.metric(label="Other Counter", value=st.session_state.other_counter)
 
 # Display ratio
-total_clicks = st.session_state.dogs_counter + st.session_state.other_counter
-if total_clicks > 0:
-    dogs_percentage = (st.session_state.dogs_counter / total_clicks) * 100
-    other_percentage = (st.session_state.other_counter / total_clicks) * 100
-    st.write(f"Dogs: {dogs_percentage:.2f}%, Other: {other_percentage:.2f}%")
-else:
-    st.write("Dogs: 0.00%, Other: 0.00%")
-
-# Display data table
-st.write('## Click Data')
-st.dataframe(st.session_state.data)
+total_clicks = st.session_state.dogs_counter + st.session_state.ot
