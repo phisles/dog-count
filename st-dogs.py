@@ -7,8 +7,6 @@ if 'dogs_counter' not in st.session_state:
     st.session_state.dogs_counter = 0
 if 'other_counter' not in st.session_state:
     st.session_state.other_counter = 0
-if 'data' not in st.session_state:
-    st.session_state.data = pd.DataFrame(columns=['Date', 'Dogs', 'Other', 'Percentage'])
 
 # Function to update counters
 def update_counter(button_type):
@@ -17,22 +15,10 @@ def update_counter(button_type):
     else:
         st.session_state.other_counter += 1
 
-    # Calculate percentage
-    total_clicks = st.session_state.dogs_counter + st.session_state.other_counter
-    dogs_percentage = (st.session_state.dogs_counter / total_clicks) * 100 if total_clicks > 0 else 0
-
-    # Update the data table
-    new_row = {'Date': datetime.datetime.now().strftime('%Y-%m-%d'),
-               'Dogs': st.session_state.dogs_counter,
-               'Other': st.session_state.other_counter,
-               'Percentage': f"{dogs_percentage:.2f}%"}
-    st.session_state.data = pd.concat([st.session_state.data, pd.DataFrame([new_row])], ignore_index=True)
-
 # Function to reset everything
 def reset_everything():
     st.session_state.dogs_counter = 0
     st.session_state.other_counter = 0
-    st.session_state.data = pd.DataFrame(columns=['Date', 'Dogs', 'Other', 'Percentage'])
 
 # Reset counters every day
 today = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -57,15 +43,12 @@ total_clicks = st.session_state.dogs_counter + st.session_state.other_counter
 if total_clicks > 0:
     dogs_percentage = (st.session_state.dogs_counter / total_clicks) * 100
     other_percentage = (st.session_state.other_counter / total_clicks) * 100
-    st.write(f"Dogs: {dogs_percentage:.2f}%, Other: {other_percentage:.2f}%")
+    st.metric(label="Dogs Percentage", value=f"{dogs_percentage:.2f}%")
+    st.metric(label="Other Percentage", value=f"{other_percentage:.2f}%")
 else:
-    st.write("Dogs: 0.00%, Other: 0.00%")
-
-# Display data table
-st.write('## Click Data')
-st.dataframe(st.session_state.data)
+    st.metric(label="Dogs Percentage", value="0.00%")
+    st.metric(label="Other Percentage", value="0.00%")
 
 # Add a small "Reset" link
-reset_link = st.markdown('<a href="#" style="font-size: 12px;" onclick="document.getElementById(\'reset\').click()">Reset</a>', unsafe_allow_html=True)
-if st.button('Reset', key='reset'):
+if st.button('Reset'):
     reset_everything()
