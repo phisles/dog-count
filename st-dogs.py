@@ -48,10 +48,6 @@ if st.button('WHERE ARE THE DOGS?'):
 if st.button('OTHER'):
     update_counter('other')
 
-# Reset button
-if st.button('Reset Everything'):
-    reset_everything()
-
 # Display counters
 st.metric(label="Dogs Counter", value=st.session_state.dogs_counter)
 st.metric(label="Other Counter", value=st.session_state.other_counter)
@@ -68,3 +64,8 @@ else:
 # Display data table
 st.write('## Click Data')
 st.dataframe(st.session_state.data)
+
+# Add a small "Reset" link
+reset_link = st.markdown('<a href="#" style="font-size: 12px;" onclick="document.getElementById(\'reset\').click()">Reset</a>', unsafe_allow_html=True)
+if st.button('Reset', key='reset'):
+    reset_everything()
