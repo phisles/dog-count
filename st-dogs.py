@@ -26,7 +26,7 @@ def update_counter(button_type):
                'Dogs': st.session_state.dogs_counter,
                'Other': st.session_state.other_counter,
                'Percentage': f"{dogs_percentage:.2f}%"}
-    st.session_state.data = st.session_state.data.append(new_row, ignore_index=True)
+    st.session_state.data = pd.concat([st.session_state.data, pd.DataFrame([new_row])], ignore_index=True)
 
 # Function to reset everything
 def reset_everything():
