@@ -57,4 +57,14 @@ st.metric(label="Dogs Counter", value=st.session_state.dogs_counter)
 st.metric(label="Other Counter", value=st.session_state.other_counter)
 
 # Display ratio
-total_clicks = st.session_state.dogs_counter + st.session_state.ot
+total_clicks = st.session_state.dogs_counter + st.session_state.other_counter
+if total_clicks > 0:
+    dogs_percentage = (st.session_state.dogs_counter / total_clicks) * 100
+    other_percentage = (st.session_state.other_counter / total_clicks) * 100
+    st.write(f"Dogs: {dogs_percentage:.2f}%, Other: {other_percentage:.2f}%")
+else:
+    st.write("Dogs: 0.00%, Other: 0.00%")
+
+# Display data table
+st.write('## Click Data')
+st.dataframe(st.session_state.data)
