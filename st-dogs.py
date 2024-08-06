@@ -26,7 +26,7 @@ if 'last_reset' not in st.session_state or st.session_state.last_reset != today:
     reset_everything()
     st.session_state.last_reset = today
 
-st.title('Button Click Counter')
+st.title('Where are the dogs?')
 
 # Buttons
 if st.button('WHERE ARE THE DOGS?'):
